@@ -24,35 +24,23 @@ export const WholeSeller = sequelize.define("wholeseller",{
         values:["Confectionary", "Spices", "Cigarettes/Beedi", "Pan", "Masala", "Mouth", "Supari", "Beverages", "Others"],
         defaultValue: "Confectionary"
     }, 
-    BusinessVolume:{
+    bizomOutletId:{
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    monthlysalesvolume:{
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    monthlysalesvalueinr:{
         type: DataTypes.STRING,
         allowNull: true
     },
     segmentId:{
         type: DataTypes.STRING,
-        allowNull: true,
-        references: {
-            model: 'wse_segment',
-            key: 'id'
-        }
+        allowNull: true
     },
     brandId:{
-        type: DataTypes.STRING,
-        allowNull: true,
-        references: {
-            model: 'wse_brand',
-            key: 'id'
-        }
-    },
-    imageId:{
-        type: DataTypes.ARRAY(DataTypes.STRING),
-        allowNull: true,
-        references: {
-            model: 'wse_brand',
-            key: 'id'
-        }
-    },
-    monthlySalesValue:{
         type: DataTypes.STRING,
         allowNull: true
     },
@@ -82,17 +70,18 @@ export const WholeSeller = sequelize.define("wholeseller",{
         type: DataTypes.STRING
     },
     createdBy:{
-        type : DataTypes.STRING, 
+        type : DataTypes.STRING,
     },
     createdAt:{
-        type : DataTypes.DATE,
+        type : DataTypes.STRING,
         defaultValue: DateTime
     },
     updatedAt:{
-        type : DataTypes.DATE,
+        type : DataTypes.STRING,
+        defaultValue: DateTime
     },
     deletedAt:{
-        type : DataTypes.DATE,
+        type : DataTypes.STRING,
     }
 });
 
@@ -187,3 +176,7 @@ export const WholeSellerImageStore = sequelize.define("wse_image_store",{
         type : DataTypes.DATE,
     }
 });
+
+// Define associations
+WholeSeller.belongsTo(WholeSellerSegment, { foreignKey: 'segmentId' });
+WholeSeller.belongsTo(WholeSellerBrand, { foreignKey: 'brandId' });
