@@ -13,12 +13,12 @@ const wholeSellerSchema = Joi.object({
   storeName: Joi.string().min(1).required(),
   ownerName: Joi.string().min(1).required(),
   storeAddress: Joi.string().min(1).required(),
-  businessCategory: Joi.string()
-    .valid("Confectionary", "Spices", "Cigarettes/Beedi", "Pan", "Masala")
-    .default("Confectionary"),
+  businessCategory: Joi.string(),
   bizomOutletId: Joi.string().min(1).required(),
   mobile_number: Joi.string().min(1).required(),
   pincode: Joi.string().min(1).required(),
+  gstNumber: Joi.string().min(1).required(),
+  panNumber: Joi.string().min(1).required(),
   emailId: Joi.string().email().required(),
   state: Joi.string().min(1).required(),
   category: Joi.string().allow(null).default("A"),
@@ -35,6 +35,8 @@ const wholeSellerSchema = Joi.object({
 
 export const createWholeSeller = async (req, res, next) => {
   try {
+
+    const filename = req.file.filename;
     const { error, value } = wholeSellerSchema.validate(req.body.formData);
 
     // If validation fails, send an error response
@@ -42,6 +44,7 @@ export const createWholeSeller = async (req, res, next) => {
         return res.status(400).json({ error: error.details[0].message });
     }
     const wholeSellerData = value;
+    wholeSellerData.imageStore = filename;
     console.log(wholeSellerData, "wholeSellerData");
 
     const newWholeSeller = await WholeSeller.create(wholeSellerData);
@@ -150,24 +153,61 @@ export const createBrand = async (req, res, next) => {
 };
 
 export const getWholeSeller = async (req, res, next) => {
-    try {
-      const selectQuery = `
-      SELECT * FROM wholesellers AS ws
-      INNER JOIN wse_segments AS wseg ON wseg.id = ws.segmentId
-      INNER JOIN wse_brands AS wb ON wb.id = ws.brandId`;
+  try {
+    const { page, limit } = req.body;
+    const offset = (page - 1) * limit;
 
-      const result = await sequelize.query(selectQuery, {
-        replacements: {  }, 
-        type: Sequelize.QueryTypes.SELECT
-      });
+    // Select query for fetching data with pagination
+    const selectQuery = `
+      SELECT ws.*, wseg.*, wb.*
+      FROM wholesellers AS ws
+      INNER JOIN wse_segments AS wseg ON wseg.id = ws.segmentId
+      INNER JOIN wse_brands AS wb ON wb.id = ws.brandId
+      LIMIT :limit OFFSET :offset;
+    `;
+
+    // Query for fetching total count of records
+    const countQuery = `
+      SELECT COUNT(*) AS total FROM wholesellers;
+    `;
+
+    // Fetch data with pagination
+    const result = await sequelize.query(selectQuery, {
+      replacements: { limit, offset },
+      type: Sequelize.QueryTypes.SELECT
+    });
+
+    let total;
+    if (page === 1) {
+      // Fetch total count of records if page is 1
+      const totalCount = await sequelize.query(countQuery, { type: Sequelize.QueryTypes.SELECT });
+      total = totalCount[0].total;
+    }
+
+    res.status(200).json({
+      error: false,
+      message: "Segment fetched successfully",
+      data: result,
+      total: total || null
+    });
+  } catch (error) {
+    console.log("fetch-segment Error:", error);
+    next(error);
+  }
+};
   
+export const uploadImage = async (req, res, next) => {
+    try {
+      const filename = req.file.filename;
+
+      // Send the filename in the response
       res.status(200).json({
         error: false,
-        message: "segment fetch Successfully...!",
-        data: result,
+        filename: filename,
+        message: `Image ${filename} uploaded successfully`,
       });
     } catch (error) {
-      console.log("fetch-segment Error ::>>", error);
+      console.log("upload image Error ::>>", error);
       next(error);
     }
   };

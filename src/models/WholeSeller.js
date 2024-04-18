@@ -20,9 +20,8 @@ export const WholeSeller = sequelize.define("wholeseller",{
         type: DataTypes.STRING,
     },
     bussinessCategory:{
-        type: DataTypes.ENUM,
-        values:["Confectionary", "Spices", "Cigarettes/Beedi", "Pan", "Masala", "Mouth", "Supari", "Beverages", "Others"],
-        defaultValue: "Confectionary"
+        type: DataTypes.STRING,
+        defaultValue: "Confectionery"
     }, 
     bizomOutletId:{
         type: DataTypes.STRING,
@@ -60,7 +59,15 @@ export const WholeSeller = sequelize.define("wholeseller",{
         type: DataTypes.STRING,
         allowNull: true
     },
-    EmailId:{
+    gstNumber:{
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    panNumber:{
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    emailId:{
         type: DataTypes.STRING
     }, 
     state:{
