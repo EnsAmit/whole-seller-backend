@@ -38,11 +38,19 @@ export const WholeSeller = sequelize.define("wholeseller",{
     },
     segmentId:{
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        references: {
+            model: 'wse_segment', // Name of the referenced model
+            key: 'id'      // Name of the referenced column in the referenced model
+          }
     },
     brandId:{
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        references: {
+            model: 'wse_brand', // Name of the referenced model
+            key: 'id'      // Name of the referenced column in the referenced model
+          }
     },
     mobile_number:{
         type: DataTypes.STRING,
@@ -177,6 +185,12 @@ export const WholeSellerImageStore = sequelize.define("wse_image_store",{
     }
 });
 
+WholeSeller.hasOne(WholeSellerSegment, { foreignKey: 'id' });
+// WholeSellerSegment.belongsTo(WholeSeller, { foreignKey: 'id' });
+
+WholeSeller.hasOne(WholeSellerBrand, { foreignKey: 'id' });
+// WholeSellerBrand.belongsTo(WholeSeller, { foreignKey: 'id' });
+
 // Define associations
-WholeSeller.belongsTo(WholeSellerSegment, { foreignKey: 'segmentId' });
-WholeSeller.belongsTo(WholeSellerBrand, { foreignKey: 'brandId' });
+// WholeSeller.belongsTo(WholeSellerSegment, { foreignKey: 'segmentId' });
+// WholeSeller.belongsTo(WholeSellerBrand, { foreignKey: 'brandId' });

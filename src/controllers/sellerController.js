@@ -6,6 +6,7 @@ import {
   WholeSellerBrand,
 } from "../models/WholeSeller";
 import Joi from "joi";
+import sequelize from "../../utils/db/dbConnection";
 
 // Define Joi schemas for validation
 const wholeSellerSchema = Joi.object({
@@ -88,6 +89,11 @@ export const getAllSegment = async (req, res, next) => {
 export const getBrandBySegmentId = async (req, res, next) => {
   try {
     const { segmentId } = req.body;
+
+    if(!segmentId || segmentId.length === 0) 
+    {
+      next(createError(403,"segment id not found"));
+    }
     const brandData = await WholeSellerBrand.findAll({
         attributes: [["id", "brandId"], "brandName"],
       where: { segment_id: segmentId },
@@ -145,33 +151,20 @@ export const createBrand = async (req, res, next) => {
 
 export const getWholeSeller = async (req, res, next) => {
     try {
-        const segmentData = await WholeSeller.findAll({
-            include: [
-                {
-                    model: WholeSellerSegment,
-                    required: true, // This indicates an inner join
-                    attributes: ['segmentName'],
-                    on: {
-                        // Specify the join condition
-                        id: Sequelize.col('wholeseller.segmentId')
-                    }
-                },
-                {
-                    model: WholeSellerBrand,
-                    required: true, // This indicates an inner join
-                    attributes: ['brandName'],
-                    on: {
-                        // Specify the join condition
-                        id: Sequelize.col('wholeseller.brandId')
-                    }
-                }
-            ]
-        });
+      const selectQuery = `
+      SELECT * FROM wholesellers AS ws
+      INNER JOIN wse_segments AS wseg ON wseg.id = ws.segmentId
+      INNER JOIN wse_brands AS wb ON wb.id = ws.brandId`;
+
+      const result = await sequelize.query(selectQuery, {
+        replacements: {  }, 
+        type: Sequelize.QueryTypes.SELECT
+      });
   
       res.status(200).json({
         error: false,
         message: "segment fetch Successfully...!",
-        data: segmentData,
+        data: result,
       });
     } catch (error) {
       console.log("fetch-segment Error ::>>", error);

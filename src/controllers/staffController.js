@@ -26,9 +26,9 @@ export const addStaff = async(req, res, next) => {
         if(getStaff){
             return next(createError(403, "Staff already exists"));
         }
-        const password = generateRandomPassword(6)
+        const password = req.body.password;
 
-        const number = generateSalt();
+        const number = 10;
         const salt = bcrypt.genSaltSync(number); 
         const hash = bcrypt.hashSync(password, salt);
         const getRole = await Role.findOne({
@@ -38,7 +38,7 @@ export const addStaff = async(req, res, next) => {
             },
             raw:true
         });
-        //console.log("Get role ::>>", getRole);
+        console.log("Get role ::>>", getRole);
         const staffObj = {
             name: req.body.name,
             email: req.body.email,
@@ -54,7 +54,7 @@ export const addStaff = async(req, res, next) => {
         // console.log("StaffObj::>>", staffObj);
         const newStaff = await Staff.create(staffObj);
         //console.log("New Staff ::>>", newStaff);
-        sendStaffRegistrationMail(newStaff.name, newStaff.email, password);
+        // sendStaffRegistrationMail(newStaff.name, newStaff.email, password);
         res.status(200).json({
             error: false,
             message: "New Staff created Successfully...!",

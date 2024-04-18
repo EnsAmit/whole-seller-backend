@@ -4,6 +4,7 @@ import { createError } from './error';
 export const verifyToken = async(req, res, next)=>{
 
     const token = req.header("x-access-token");
+    console.log(token, "token")
     if(!token){
         return next(createError(401,"your are not authenticated...!"))
     }

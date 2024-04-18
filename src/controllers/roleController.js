@@ -25,6 +25,22 @@ export const addRole = async(req, res, next) => {
             updatedIstAt: DateTime()
         };
         const perm1 = await Permission.create(perm1Obj);
+        const perm2Obj = {
+            roleId:newRole.id,
+            moduleName:"staff",
+            access:permsn.staff,
+            createdIstAt: DateTime(),
+            updatedIstAt: DateTime()
+        };
+        const perm2 = await Permission.create(perm2Obj);
+        const perm3Obj = {
+            roleId:newRole.id,
+            moduleName:"role",
+            access:permsn.role,
+            createdIstAt: DateTime(),
+            updatedIstAt: DateTime()
+        };
+        const perm3 = await Permission.create(perm3Obj);
 
         res.status(200).json({
             error: false,
@@ -94,6 +110,28 @@ export const updateRoleById = async(req, res, next) => {
             where:{
                 roleId:req.body.id,
                 moduleName:"seller"
+            }
+        });
+        const perm2Obj = {
+            moduleName:"staff",
+            access:permsn.staff,
+            updatedIstAt: DateTime()
+        };
+        const perm2 = await Permission.update(perm2Obj,{
+            where:{
+                roleId:req.body.id,
+                moduleName:"staff"
+            }
+        });
+        const perm3Obj = {
+            moduleName:"role",
+            access:permsn.role,
+            updatedIstAt: DateTime()
+        };
+        const perm3 = await Permission.update(perm3Obj,{
+            where:{
+                roleId:req.body.id,
+                moduleName:"role"
             }
         });
         res.status(200).json({

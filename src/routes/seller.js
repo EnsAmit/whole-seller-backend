@@ -10,6 +10,6 @@ router.get('/get-all-segment', verifyToken, verfiyAdmin, getAllSegment);
 router.post('/get-all-brand-by-segmentId', verifyToken, verfiyAdmin, getBrandBySegmentId);
 router.post('/create-segment', verifyToken, verfiyAdmin, createSegment);
 router.post('/create-brand', verifyToken, verfiyAdmin, createBrand);
-router.post('/get-whole-seller', verifyToken, verfiyAdmin, getWholeSeller);
+router.get('/get-whole-seller', verifyToken, verfiyAdmin, getWholeSeller);
 
 export default router;
