@@ -81,6 +81,12 @@ export const WholeSeller = sequelize.define("wholeseller",{
     storeLocation:{
         type: DataTypes.STRING
     },
+    latitude:{
+        type: DataTypes.STRING
+    },
+    longitude:{
+        type: DataTypes.STRING
+    },
     imageStore:{
         type: DataTypes.STRING
     },

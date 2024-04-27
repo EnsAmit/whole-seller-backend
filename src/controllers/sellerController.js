@@ -7,6 +7,8 @@ import {
 } from "../models/WholeSeller";
 import Joi from "joi";
 import sequelize from "../../utils/db/dbConnection";
+import xlsx from 'xlsx';
+import { Store } from "../models/Store";
 
 // Define Joi schemas for validation
 const wholeSellerSchema = Joi.object({
@@ -23,6 +25,8 @@ const wholeSellerSchema = Joi.object({
   state: Joi.string().min(1).required(),
   category: Joi.string().allow(null).default("A"),
   storeLocation: Joi.string().allow(null),
+  latitude: Joi.string().allow(null),
+  longitude: Joi.string().allow(null),
   monthlysalesvolume: Joi.string().min(1).required(),
   monthlysalesvalueinr: Joi.string().min(1).required(),
   segmentId: Joi.string().min(1).required(),
@@ -35,13 +39,12 @@ const wholeSellerSchema = Joi.object({
 
 export const createWholeSeller = async (req, res, next) => {
   try {
-
     const filename = req.file.filename;
     const { error, value } = wholeSellerSchema.validate(req.body.formData);
 
     // If validation fails, send an error response
     if (error) {
-        return res.status(400).json({ error: error.details[0].message });
+      return res.status(400).json({ error: error.details[0].message });
     }
     const wholeSellerData = value;
     wholeSellerData.imageStore = filename;
@@ -57,17 +60,17 @@ export const createWholeSeller = async (req, res, next) => {
   } catch (error) {
     // Check if the error contains validation errors
     if (error && error.details) {
-        // Handle validation errors
-        console.log("Validation Error:", error.details);
-        res.status(400).json({
-            error: true,
-            message: "Validation error occurred",
-            details: error.details
-        });
+      // Handle validation errors
+      console.log("Validation Error:", error.details);
+      res.status(400).json({
+        error: true,
+        message: "Validation error occurred",
+        details: error.details,
+      });
     } else {
-        // Handle other errors
-        console.log("Add-whole-seller Error:", error);
-        next(error);
+      // Handle other errors
+      console.log("Add-whole-seller Error:", error);
+      next(error);
     }
   }
 };
@@ -93,12 +96,11 @@ export const getBrandBySegmentId = async (req, res, next) => {
   try {
     const { segmentId } = req.body;
 
-    if(!segmentId || segmentId.length === 0) 
-    {
-      next(createError(403,"segment id not found"));
+    if (!segmentId || segmentId.length === 0) {
+      next(createError(403, "segment id not found"));
     }
     const brandData = await WholeSellerBrand.findAll({
-        attributes: [["id", "brandId"], "brandName"],
+      attributes: [["id", "brandId"], "brandName"],
       where: { segment_id: segmentId },
     });
 
@@ -174,13 +176,15 @@ export const getWholeSeller = async (req, res, next) => {
     // Fetch data with pagination
     const result = await sequelize.query(selectQuery, {
       replacements: { limit, offset },
-      type: Sequelize.QueryTypes.SELECT
+      type: Sequelize.QueryTypes.SELECT,
     });
 
     let total;
     if (page === 1) {
       // Fetch total count of records if page is 1
-      const totalCount = await sequelize.query(countQuery, { type: Sequelize.QueryTypes.SELECT });
+      const totalCount = await sequelize.query(countQuery, {
+        type: Sequelize.QueryTypes.SELECT,
+      });
       total = totalCount[0].total;
     }
 
@@ -188,26 +192,65 @@ export const getWholeSeller = async (req, res, next) => {
       error: false,
       message: "Segment fetched successfully",
       data: result,
-      total: total || null
+      total: total || null,
     });
   } catch (error) {
     console.log("fetch-segment Error:", error);
     next(error);
   }
 };
-  
-export const uploadImage = async (req, res, next) => {
-    try {
-      const filename = req.file.filename;
 
-      // Send the filename in the response
-      res.status(200).json({
-        error: false,
-        filename: filename,
-        message: `Image ${filename} uploaded successfully`,
-      });
-    } catch (error) {
-      console.log("upload image Error ::>>", error);
-      next(error);
-    }
-  };
+export const uploadImage = async (req, res, next) => {
+  try {
+    const filename = req.file.filename;
+
+    // Send the filename in the response
+    res.status(200).json({
+      error: false,
+      filename: filename,
+      message: `Image ${filename} uploaded successfully`,
+    });
+  } catch (error) {
+    console.log("upload image Error ::>>", error);
+    next(error);
+  }
+};
+
+export const convertToJson = async (req, res, next) => {
+  try {
+    const workbook = xlsx.read(req.file.buffer, { type: "buffer" });
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+    const data = xlsx.utils.sheet_to_json(worksheet);
+    console.log(data, workbook.SheetNames, "excel data=======================================>");
+
+    data.map( async(item, index) => {
+      delete item.Sno;
+      await Store.create(item);
+    })
+    
+    res.status(200).json({
+      error: false,
+      data: data,
+      message: `Convert successfully`,
+    });
+  } catch (error) {
+    console.log("Conversion Error ::>>", error);
+    next(error);
+  }
+};
+
+export const getStoreDataByOutletId = async (req, res, next) => {
+  try {
+    const data = Store.findOne({ bizomOutletId: bizomOutletId});
+
+    res.status(200).json({
+      error: false,
+      data: data,
+      message: `Data fetch successfully`,
+    });
+  } catch (error) {
+    console.log("Data fetch ::>>", error);
+    next(error);
+  }
+};
