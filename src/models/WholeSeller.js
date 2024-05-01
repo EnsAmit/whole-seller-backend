@@ -59,14 +59,14 @@ export const WholeSeller = sequelize.define("wholeseller",{
         type: DataTypes.STRING,
         allowNull: true
     },
-    gstNumber:{
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    panNumber:{
-        type: DataTypes.STRING,
-        allowNull: true
-    },
+    // gstNumber:{
+    //     type: DataTypes.STRING,
+    //     allowNull: true
+    // },
+    // panNumber:{
+    //     type: DataTypes.STRING,
+    //     allowNull: true
+    // },
     emailId:{
         type: DataTypes.STRING
     }, 
@@ -78,14 +78,17 @@ export const WholeSeller = sequelize.define("wholeseller",{
         values: ['A', 'B', 'C'],
         defaultValue: 'A'
     }, 
-    storeLocation:{
-        type: DataTypes.STRING
+    // storeLocation:{
+    //     type: DataTypes.STRING
+    // },
+    townAndCity:{
+        type:DataTypes.STRING
     },
     latitude:{
-        type: DataTypes.STRING
+        type:DataTypes.STRING
     },
     longitude:{
-        type: DataTypes.STRING
+        type:DataTypes.STRING
     },
     imageStore:{
         type: DataTypes.STRING

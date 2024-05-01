@@ -19,12 +19,12 @@ const wholeSellerSchema = Joi.object({
   bizomOutletId: Joi.string().min(1).required(),
   mobile_number: Joi.string().min(1).required(),
   pincode: Joi.string().min(1).required(),
-  gstNumber: Joi.string().min(1).required(),
-  panNumber: Joi.string().min(1).required(),
+  // gstNumber: Joi.string().min(1).required(),
+  // panNumber: Joi.string().min(1).required(),
   emailId: Joi.string().email().required(),
   state: Joi.string().min(1).required(),
   category: Joi.string().allow(null).default("A"),
-  storeLocation: Joi.string().allow(null),
+  // storeLocation: Joi.string().allow(null),
   latitude: Joi.string().allow(null),
   longitude: Joi.string().allow(null),
   monthlysalesvolume: Joi.string().min(1).required(),
@@ -92,16 +92,11 @@ export const getAllSegment = async (req, res, next) => {
   }
 };
 
-export const getBrandBySegmentId = async (req, res, next) => {
+export const getAllBrand = async (req, res, next) => {
   try {
-    const { segmentId } = req.body;
 
-    if (!segmentId || segmentId.length === 0) {
-      next(createError(403, "segment id not found"));
-    }
     const brandData = await WholeSellerBrand.findAll({
       attributes: [["id", "brandId"], "brandName"],
-      where: { segment_id: segmentId },
     });
 
     res.status(200).json({
