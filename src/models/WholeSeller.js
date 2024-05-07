@@ -91,7 +91,7 @@ export const WholeSeller = sequelize.define("wholeseller",{
         type:DataTypes.STRING
     },
     imageStore:{
-        type: DataTypes.STRING
+        type: DataTypes.ARRAY(DataTypes.STRING),
     },
     createdBy:{
         type : DataTypes.STRING,

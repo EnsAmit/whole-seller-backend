@@ -41,6 +41,14 @@ export const addRole = async(req, res, next) => {
             updatedIstAt: DateTime()
         };
         const perm3 = await Permission.create(perm3Obj);
+        const perm4Obj = {
+            roleId:newRole.id,
+            moduleName:"store",
+            access:permsn.store,
+            createdIstAt: DateTime(),
+            updatedIstAt: DateTime()
+        };
+        const perm4 = await Permission.create(perm4Obj);
 
         res.status(200).json({
             error: false,
@@ -132,6 +140,17 @@ export const updateRoleById = async(req, res, next) => {
             where:{
                 roleId:req.body.id,
                 moduleName:"role"
+            }
+        });
+        const perm4Obj = {
+            moduleName:"store",
+            access:permsn.role,
+            updatedIstAt: DateTime()
+        };
+        const perm4 = await Permission.update(perm4Obj,{
+            where:{
+                roleId:req.body.id,
+                moduleName:"store"
             }
         });
         res.status(200).json({

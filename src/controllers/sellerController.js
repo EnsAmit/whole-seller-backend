@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import { createError } from '../../utils/error.js';
 import DateTime from "../../utils/constant/getDate&Time";
 import {
   WholeSeller,
@@ -10,47 +11,141 @@ import sequelize from "../../utils/db/dbConnection";
 import xlsx from 'xlsx';
 import { Store } from "../models/Store";
 
-// Define Joi schemas for validation
-const wholeSellerSchema = Joi.object({
-  storeName: Joi.string().min(1).required(),
-  ownerName: Joi.string().min(1).required(),
-  storeAddress: Joi.string().min(1).required(),
-  businessCategory: Joi.string(),
-  bizomOutletId: Joi.string().min(1).required(),
-  mobile_number: Joi.string().min(1).required(),
-  pincode: Joi.string().min(1).required(),
-  // gstNumber: Joi.string().min(1).required(),
-  // panNumber: Joi.string().min(1).required(),
-  emailId: Joi.string().email().required(),
-  state: Joi.string().min(1).required(),
-  category: Joi.string().allow(null).default("A"),
-  // storeLocation: Joi.string().allow(null),
-  latitude: Joi.string().allow(null),
-  longitude: Joi.string().allow(null),
-  monthlysalesvolume: Joi.string().min(1).required(),
-  monthlysalesvalueinr: Joi.string().min(1).required(),
-  segmentId: Joi.string().min(1).required(),
-  brandId: Joi.string().min(1).required(),
-  imageStore: Joi.string().min(1).required(),
-  createdBy: Joi.string().min(1).required(),
-  createdAt: Joi.string().default(DateTime),
-  updatedAt: Joi.string(),
-});
+// // Define Joi schemas for validation
+// const wholeSellerSchema = Joi.object({
+//   storeName: Joi.string().min(1).required(),
+//   ownerName: Joi.string().min(1).required(),
+//   storeAddress: Joi.string().min(1).required(),
+//   businessCategory: Joi.string(),
+//   bizomOutletId: Joi.string().min(1).required(),
+//   mobile_number: Joi.string().min(1).required(),
+//   pincode: Joi.string().min(1).required(),
+//   // gstNumber: Joi.string().min(1).required(),
+//   // panNumber: Joi.string().min(1).required(),
+//   emailId: Joi.string().email().required(),
+//   state: Joi.string().min(1).required(),
+//   category: Joi.string().allow(null).default("A"),
+//   // storeLocation: Joi.string().allow(null),
+//   latitude: Joi.string().allow(null),
+//   longitude: Joi.string().allow(null),
+//   monthlysalesvolume: Joi.string().min(1).required(),
+//   monthlysalesvalueinr: Joi.string().min(1).required(),
+//   segmentId: Joi.string().min(1).required(),
+//   brandId: Joi.string().min(1).required(),
+//   imageStore: Joi.array().items(Joi.string()),
+//   createdBy: Joi.string().min(1).required(),
+//   createdAt: Joi.string().default(DateTime),
+//   updatedAt: Joi.string(),
+// });
 
 export const createWholeSeller = async (req, res, next) => {
   try {
-    const filename = req.file.filename;
-    const { error, value } = wholeSellerSchema.validate(req.body.formData);
+    // if(!req.body.storeName || req.body.storeName===""){
+    //   next(createError(403,"Enter the Valid storeName"));
+    // }
+    // else if(!req.body.ownerName || req.body.ownerName===""){
+    //   next(createError(403,"Enter the Valid ownerName"));
+    // }
+    // else if(!req.body.storeAddress || req.body.storeAddress===""){
+    //   next(createError(403,"Enter the Valid storeAddress"));
+    // }
+    // else if(!req.body.businessCategory || req.body.businessCategory===""){
+    //   next(createError(403,"Enter the Valid businessCategory"));
+    // }
+    // else if(!req.body.bizomOutletId || req.body.bizomOutletId===""){
+    //   next(createError(403,"Enter the Valid bizomOutletId"));
+    // }
+    // else if(!req.body.mobile_number || req.body.mobile_number===""){
+    //   next(createError(403,"Enter the Valid mobile_number"));
+    // }
+    // else if(!req.body.pincode || req.body.pincode===""){
+    //   next(createError(403,"Enter the Valid pincode"));
+    // }
+    // else if(!req.body.emailId || req.body.emailId===""){
+    //   next(createError(403,"Enter the Valid emailId"));
+    // }
+    // else if(!req.body.state || req.body.state===""){
+    //   next(createError(403,"Enter the Valid state"));
+    // }
+    // else if(!req.body.category || req.body.category===""){
+    //   next(createError(403,"Enter the Valid category"));
+    // }
+    // else if(!req.body.latitude || req.body.latitude===""){
+    //   next(createError(403,"Enter the Valid latitude"));
+    // }
+    // else if(!req.body.longitude || req.body.longitude===""){
+    //   next(createError(403,"Enter the Valid longitude"));
+    // }
+    // else if(!req.body.monthlysalesvolume || req.body.monthlysalesvolume===""){
+    //   next(createError(403,"Enter the Valid monthlysalesvolume"));
+    // }
+    // else if(!req.body.monthlysalesvalueinr || req.body.monthlysalesvalueinr===""){
+    //   next(createError(403,"Enter the Valid monthlysalesvalueinr"));
+    // }
+    // else if(!req.body.segmentId || req.body.segmentId===""){
+    //   next(createError(403,"Enter the Valid segmentId"));
+    // }
+    // else if(!req.body.brandId || req.body.brandId===""){
+    //   next(createError(403,"Enter the Valid brandId"));
+    // }
+    // else if(!req.body.createdBy || req.body.createdBy===""){
+    //   next(createError(403,"Enter the Valid createdBy"));
+    // }
+    // const filenames = req.files?.map(file => file.filename);
+    // console.log(filenames, "filenames");
+    // let { error, value } = wholeSellerSchema.validate(req.body.formData);
+    console.log(req?.body?.brandId, "req?.body?.brandId")
 
-    // If validation fails, send an error response
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-    }
-    const wholeSellerData = value;
-    wholeSellerData.imageStore = filename;
-    console.log(wholeSellerData, "wholeSellerData");
+    // // If validation fails, send an error response
+    // if (error) {
+    //   return res.status(400).json({ error: error.details[0].message })
+    // }
+    // let wholeSellerData = value;
+    // wholeSellerData.imageStore = filenames;
+    // console.log(wholeSellerData, "wholeSellerData");
 
-    const newWholeSeller = await WholeSeller.create(wholeSellerData);
+    let wholeSellerData = req?.body;
+    console.log(wholeSellerData, "wholeSellerData")
+    // const segment = await WholeSellerBrand.findOne({ 
+    //   where: { id: req?.body?.brandId } 
+    // });
+
+    const selectQuery = `
+    SELECT *
+    FROM wse_brands where id=:id;
+  `;
+
+  // Fetch data with pagination
+  const segment = await sequelize.query(selectQuery, {
+    replacements: { id: req?.body?.brandId },
+    type: Sequelize.QueryTypes.SELECT,
+  });
+
+    console.log(segment, "segment")
+
+    const newWholeSeller = await WholeSeller.create({
+      storeName: wholeSellerData.storeName,
+      ownerName: wholeSellerData.ownerName,
+      storeAddress: wholeSellerData.storeAddress,
+      businessCategory: wholeSellerData.businessCategory,
+      bizomOutletId: wholeSellerData.bizomOutletId,
+      mobile_number: wholeSellerData.mobile_number,
+      pincode: wholeSellerData.pincode,
+      emailId: wholeSellerData.emailId,
+      state : wholeSellerData.state,
+      category: wholeSellerData.category,
+      latitude: wholeSellerData.latitude,
+      longitude: wholeSellerData.longitude,
+      monthlysalesvolume: wholeSellerData.monthlysalesvolume,
+      monthlysalesvalueinr: wholeSellerData.monthlysalesvalueinr,
+      townAndCity: wholeSellerData.townAndCity,
+      segmentId: segment[0].segment_id,
+      brandId: wholeSellerData.brandId,
+      imageStore: [
+        "1714991318771_Screenshot 2024-03-28 172023.png"
+    ],
+      createdBy: wholeSellerData.createdBy
+    });
 
     res.status(200).json({
       error: false,
@@ -58,20 +153,12 @@ export const createWholeSeller = async (req, res, next) => {
       data: newWholeSeller,
     });
   } catch (error) {
-    // Check if the error contains validation errors
-    if (error && error.details) {
-      // Handle validation errors
-      console.log("Validation Error:", error.details);
+    console.log(error, "error")
       res.status(400).json({
         error: true,
-        message: "Validation error occurred",
+        message: "Internal Server error",
         details: error.details,
       });
-    } else {
-      // Handle other errors
-      console.log("Add-whole-seller Error:", error);
-      next(error);
-    }
   }
 };
 
@@ -197,13 +284,14 @@ export const getWholeSeller = async (req, res, next) => {
 
 export const uploadImage = async (req, res, next) => {
   try {
-    const filename = req.file.filename;
+    const filenames = req.files?.map(file => file.filename);
+    console.log(filenames, "filenames");
 
     // Send the filename in the response
     res.status(200).json({
       error: false,
-      filename: filename,
-      message: `Image ${filename} uploaded successfully`,
+      filename: filenames,
+      message: `Images uploaded successfully`,
     });
   } catch (error) {
     console.log("upload image Error ::>>", error);
@@ -242,6 +330,36 @@ export const getStoreDataByOutletId = async (req, res, next) => {
     res.status(200).json({
       error: false,
       data: data,
+      message: `Data fetch successfully`,
+    });
+  } catch (error) {
+    console.log("Data fetch ::>>", error);
+    next(error);
+  }
+};
+
+export const getStoreDataByMobileNo = async (req, res, next) => {
+  try {
+
+    // console.log(req.body.MobileNo, "req.body.MobileNo")
+    // const data = Store.findOne({ 
+    //   where: { MobileNo: `req.body.MobileNo` } 
+    // });
+
+    const selectQuery = `
+    SELECT *
+    FROM stores where MobileNo=:MobileNo OR bizomOutletId=:bizomOutletId;
+  `;
+
+  // Fetch data with pagination
+  const result = await sequelize.query(selectQuery, {
+    replacements: { MobileNo: req.body.MobileNo, bizomOutletId: req.body.bizomOutletId },
+    type: Sequelize.QueryTypes.SELECT,
+  });
+
+    res.status(200).json({
+      error: false,
+      data: result,
       message: `Data fetch successfully`,
     });
   } catch (error) {
