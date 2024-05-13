@@ -10,11 +10,12 @@ const upload1 = multer({ storage: storage });
 
 const router = express.Router();
 
-//staff
 // router.post('/create-whole-seller', verifyToken, verfiyAdmin, upload(), createWholeSeller);
 router.post('/create-whole-seller', verifyToken, verfiyAdmin, createWholeSeller);
 router.get('/get-all-segment', verifyToken, verfiyAdmin, getAllSegment);
 router.get('/get-all-brand', verifyToken, verfiyAdmin, getAllBrand);
+// router.post('/create-segment', createSegment);
+// router.post('/create-brand', createBrand);
 router.post('/create-segment', verifyToken, verfiyAdmin, createSegment);
 router.post('/create-brand', verifyToken, verfiyAdmin, createBrand);
 router.post('/get-whole-seller', verifyToken, verfiyAdmin, getWholeSeller);

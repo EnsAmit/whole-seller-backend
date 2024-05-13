@@ -20,12 +20,10 @@ export const WholeSeller = sequelize.define("wholeseller",{
         type: DataTypes.STRING,
     },
     bussinessCategory:{
-        type: DataTypes.STRING,
-        defaultValue: "Confectionery"
+        type: DataTypes.ARRAY(DataTypes.STRING),
     }, 
     bizomOutletId:{
         type: DataTypes.STRING,
-        allowNull: true
     },
     monthlysalesvolume:{
         type: DataTypes.STRING,
@@ -35,21 +33,25 @@ export const WholeSeller = sequelize.define("wholeseller",{
         type: DataTypes.STRING,
         allowNull: true
     },
-    segmentId:{
-        type: DataTypes.STRING,
-        allowNull: true,
-        references: {
-            model: 'wse_segment', // Name of the referenced model
-            key: 'id'      // Name of the referenced column in the referenced model
-          }
-    },
+    // segmentId:{
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     references: {
+    //         model: 'wse_segment', // Name of the referenced model
+    //         key: 'id'      // Name of the referenced column in the referenced model
+    //       }
+    // },
+    // brandId:{
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     references: {
+    //         model: 'wse_brand', // Name of the referenced model
+    //         key: 'id'      // Name of the referenced column in the referenced model
+    //       }
+    // },
     brandId:{
-        type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.UUID),
         allowNull: true,
-        references: {
-            model: 'wse_brand', // Name of the referenced model
-            key: 'id'      // Name of the referenced column in the referenced model
-          }
     },
     mobile_number:{
         type: DataTypes.STRING,
@@ -200,13 +202,3 @@ export const WholeSellerImageStore = sequelize.define("wse_image_store",{
         type : DataTypes.DATE,
     }
 });
-
-WholeSeller.hasOne(WholeSellerSegment, { foreignKey: 'id' });
-// WholeSellerSegment.belongsTo(WholeSeller, { foreignKey: 'id' });
-
-WholeSeller.hasOne(WholeSellerBrand, { foreignKey: 'id' });
-// WholeSellerBrand.belongsTo(WholeSeller, { foreignKey: 'id' });
-
-// Define associations
-// WholeSeller.belongsTo(WholeSellerSegment, { foreignKey: 'segmentId' });
-// WholeSeller.belongsTo(WholeSellerBrand, { foreignKey: 'brandId' });

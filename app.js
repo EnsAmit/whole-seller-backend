@@ -9,7 +9,6 @@ import adminRouter from './src/routes/admin.js';
 import sellerRouter from './src/routes/seller.js';
 // import modelRouter from './utils/db/modelSync.js';//alter tables
 
-
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT;

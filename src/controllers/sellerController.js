@@ -110,24 +110,24 @@ export const createWholeSeller = async (req, res, next) => {
     //   where: { id: req?.body?.brandId } 
     // });
 
-    const selectQuery = `
-    SELECT *
-    FROM wse_brands where id=:id;
-  `;
+  //   const selectQuery = `
+  //   SELECT *
+  //   FROM wse_brands where id=:id;
+  // `;
 
   // Fetch data with pagination
-  const segment = await sequelize.query(selectQuery, {
-    replacements: { id: req?.body?.brandId },
-    type: Sequelize.QueryTypes.SELECT,
-  });
+  // const segment = await sequelize.query(selectQuery, {
+  //   replacements: { id: req?.body?.brandId },
+  //   type: Sequelize.QueryTypes.SELECT,
+  // });
 
-    console.log(segment, "segment")
+  //   console.log(segment, "segment")
 
     const newWholeSeller = await WholeSeller.create({
       storeName: wholeSellerData.storeName,
       ownerName: wholeSellerData.ownerName,
       storeAddress: wholeSellerData.storeAddress,
-      businessCategory: wholeSellerData.businessCategory,
+      bussinessCategory: wholeSellerData.businessCategory,
       bizomOutletId: wholeSellerData.bizomOutletId,
       mobile_number: wholeSellerData.mobile_number,
       pincode: wholeSellerData.pincode,
@@ -139,7 +139,7 @@ export const createWholeSeller = async (req, res, next) => {
       monthlysalesvolume: wholeSellerData.monthlysalesvolume,
       monthlysalesvalueinr: wholeSellerData.monthlysalesvalueinr,
       townAndCity: wholeSellerData.townAndCity,
-      segmentId: segment[0].segment_id,
+      segmentId: wholeSellerData.brandId,
       brandId: wholeSellerData.brandId,
       imageStore: [
         "1714991318771_Screenshot 2024-03-28 172023.png"
@@ -157,7 +157,7 @@ export const createWholeSeller = async (req, res, next) => {
       res.status(400).json({
         error: true,
         message: "Internal Server error",
-        details: error.details,
+        details: error,
       });
   }
 };
