@@ -8,7 +8,7 @@ const generateSalt = 10;
 
 export const addStaff = async(req, res, next) => {
     try {
-        if ( !req.body.name || req.body.name === "" || !req.body.email || req.body.email === "" || 
+        if ( !req.body.name || req.body.name === "" || !req.body.username || req.body.username === "" || 
             // req.body.roleName === "" || req.body.password === "" || 
             // req.body.contactNo === "" || req.body.contactNo.length!==10 ||
             !req.body.roleId || req.body.roleId === "" || !req.body.status || req.body.status === "") {   
@@ -19,7 +19,7 @@ export const addStaff = async(req, res, next) => {
 
         const getStaff = await Staff.findOne({
             where:{
-                email:req.body.email
+                username:req.body.username
             },
             raw:true
         });
@@ -41,7 +41,7 @@ export const addStaff = async(req, res, next) => {
         console.log("Get role ::>>", getRole);
         const staffObj = {
             name: req.body.name,
-            email: req.body.email,
+            username: req.body.username,
             password: hash,
             contactNo : req.body.contactNo,
             status:req.body.status===true ? "Active" : "Inactive",
@@ -70,7 +70,7 @@ export const updateStaffById = async(req, res, next) => {
     // console.log("id ::>>",req.body.id);
     try {
 
-        if ( !req.body.id || req.body.id === "" || !req.body.name || req.body.name === "" || !req.body.email || req.body.email === "" || 
+        if ( !req.body.id || req.body.id === "" || !req.body.name || req.body.name === "" || !req.body.username || req.body.username === "" || 
             // req.body.roleName === "" || 
             // req.body.password === "" || 
             // req.body.contactNo === "" || req.body.contactNo.length!==10 ||
@@ -86,7 +86,7 @@ export const updateStaffById = async(req, res, next) => {
         });
         const staffObj = {
             name: req.body.name,
-            email: req.body.email,
+            username: req.body.username,
             password: req.body.password,
             contactNo : req.body.contactNo,
             status:req.body.status===true ? "Active" : "Inactive",
@@ -123,6 +123,7 @@ export const getStaffById = async(req, res, next) => {
             },
             raw:true
         });
+        console.log(getStaff, "getStaff")
         res.status(200).json({
             error: false,
             message: "Staff found Successfully...!",
@@ -191,12 +192,12 @@ export const allStaff = async(req, res, next) => {
 
 export const adminResetPassword = async(req, res, next)=>{
     try {
-        if(!req.body.email || req.body.email==="" || !req.body.newPassword || req.body.newPassword==="" || !req.body.confirmPassword || req.body.confirmPassword===""){
+        if(!req.body.username || req.body.username==="" || !req.body.newPassword || req.body.newPassword==="" || !req.body.confirmPassword || req.body.confirmPassword===""){
             return next(createError(403,"Please fill the fields...!"));
         }
         const staff = await Staff.findOne({
             where :{
-                email: req.body.email
+                username: req.body.username
             }
         });
         if(!staff){

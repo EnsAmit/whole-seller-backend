@@ -12,9 +12,9 @@ dotenv.config();
 const generateSalt = 10;
 
 export const adminLogin = async (req, res, next) => {
-    const email = req.body.email;
-    if (!req.body.email || req.body.email === "") {
-        next(createError(403, "Enter the Valid Email"));
+    const username = req.body.username;
+    if (!req.body.username || req.body.username === "") {
+        next(createError(403, "Enter the Valid Username"));
     }
     else if (!req.body.password || req.body.password === "") {
         next(createError(403, "Enter the Valid Password"));
@@ -23,7 +23,7 @@ export const adminLogin = async (req, res, next) => {
     try {
         const seller = await Staff.findOne({
             where: {
-                email: email,
+                username: username,
                 status: 'Active'
                 // roles:'superadmin'
             },
@@ -31,13 +31,13 @@ export const adminLogin = async (req, res, next) => {
         });
         // console.log("Seller ::>>",seller)
         if (!seller) {
-            return next(createError(404, `Invalid Credentials with email : ${email}`));
+            return next(createError(404, `Invalid Credentials with username : ${username}`));
         }
         //if user exist then check password is matched or not
         console.log((req.body.password).length, (seller.password).length, "dsdf")
         const isPasswordMatched = await bcrypt.compare(req.body.password, seller.password);
         if (!isPasswordMatched) {
-            return next(createError(401, `Invalid Credentials Email or Password...!`));
+            return next(createError(401, `Invalid Credentials Username or Password...!`));
         }
         const { password, role, ...rest } = seller;
         rest.createdAt = (rest.createdAt)?.toLocaleString('en-US', {

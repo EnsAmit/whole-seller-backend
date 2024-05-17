@@ -20,7 +20,7 @@ export const Store = sequelize.define("store", {
   storeAddress: {
     type: DataTypes.STRING,
   },
-  MobileNo: {
+  mobile_number: {
     type: DataTypes.STRING,
     allowNull: true,
     unique: true,
@@ -30,7 +30,7 @@ export const Store = sequelize.define("store", {
     allowNull: true,
     unique: true,
   },
-  city: {
+  townAndCity: {
     type: DataTypes.STRING
   },
   state: {

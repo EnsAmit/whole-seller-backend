@@ -94,7 +94,7 @@ export const createWholeSeller = async (req, res, next) => {
     // const filenames = req.files?.map(file => file.filename);
     // console.log(filenames, "filenames");
     // let { error, value } = wholeSellerSchema.validate(req.body.formData);
-    console.log(req?.body?.brandId, "req?.body?.brandId")
+    // console.log(req?.body?.brandId, "req?.body?.brandId")
 
     // // If validation fails, send an error response
     // if (error) {
@@ -136,11 +136,12 @@ export const createWholeSeller = async (req, res, next) => {
       category: wholeSellerData.category,
       latitude: wholeSellerData.latitude,
       longitude: wholeSellerData.longitude,
-      monthlysalesvolume: wholeSellerData.monthlysalesvolume,
-      monthlysalesvalueinr: wholeSellerData.monthlysalesvalueinr,
+      // monthlysalesvolume: wholeSellerData.monthlysalesvolume,
+      // monthlysalesvalueinr: wholeSellerData.monthlysalesvalueinr,
       townAndCity: wholeSellerData.townAndCity,
-      segmentId: wholeSellerData.brandId,
-      brandId: wholeSellerData.brandId,
+      // segmentId: wholeSellerData.brandId,
+      // brandId: wholeSellerData.brandId,
+      businessVolume: wholeSellerData.businessVolume,
       imageStore: [
         "1714991318771_Screenshot 2024-03-28 172023.png"
     ],
@@ -341,19 +342,19 @@ export const getStoreDataByOutletId = async (req, res, next) => {
 export const getStoreDataByMobileNo = async (req, res, next) => {
   try {
 
-    // console.log(req.body.MobileNo, "req.body.MobileNo")
+    console.log(req.query.bizomOutletId, "req.query.bizomOutletId")
     // const data = Store.findOne({ 
     //   where: { MobileNo: `req.body.MobileNo` } 
     // });
 
     const selectQuery = `
     SELECT *
-    FROM stores where MobileNo=:MobileNo OR bizomOutletId=:bizomOutletId;
+    FROM stores where bizomOutletId=:bizomOutletId;
   `;
 
   // Fetch data with pagination
   const result = await sequelize.query(selectQuery, {
-    replacements: { MobileNo: req.body.MobileNo, bizomOutletId: req.body.bizomOutletId },
+    replacements: { bizomOutletId: req.query.bizomOutletId },
     type: Sequelize.QueryTypes.SELECT,
   });
 

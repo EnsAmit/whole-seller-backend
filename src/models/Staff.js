@@ -5,7 +5,7 @@ export const Staff = sequelize.define("staff", {
     name:{
         type: DataTypes.STRING
     },
-    email: {
+    username: {
         type: DataTypes.STRING,
         unique:true
     },

@@ -28,11 +28,11 @@ const modelRouter = Router();
 //   console.error('Unable to Update Seller table : ', error);
 // });
 //wholeseller
-WholeSeller.sync({ alter: true }).then(() => {
-  console.log('Update Store table successfully!');
-}).catch((error) => {
-  console.error('Unable to Update WholeSeller table : ', error);
-});
+// WholeSeller.sync({ alter: true }).then(() => {
+//   console.log('Update Store table successfully!');
+// }).catch((error) => {
+//   console.error('Unable to Update WholeSeller table : ', error);
+// });
 //wholeseller
 // WholeSellerSegment.sync({ alter: true }).then(() => {
 //   console.log('Update Store table successfully!');
@@ -54,11 +54,11 @@ WholeSeller.sync({ alter: true }).then(() => {
 // });
 
 //staff
-// Staff.sync({ alter: true }).then(() => {
-//   console.log('Update Staff table successfully!');
-// }).catch((error) => {
-//   console.error('Unable to Update Staff table : ', error);
-// });
+Staff.sync({ alter: true }).then(() => {
+  console.log('Update Staff table successfully!');
+}).catch((error) => {
+  console.error('Unable to Update Staff table : ', error);
+});
 
 //permission
 // Permission.sync({ alter: true }).then(() => {

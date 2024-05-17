@@ -4,7 +4,7 @@ import DateTime from "../../utils/constant/getDate&Time";
 import { v4 as uuidv4 } from 'uuid';
 
 // ----------------------------------Schema for WholeSeller---------------------------------
-export const WholeSeller = sequelize.define("wholeseller",{
+export const WholeSeller = sequelize.define("wholeseller", {
     id: {
         type: DataTypes.UUID,
         primaryKey: true,
@@ -13,101 +13,69 @@ export const WholeSeller = sequelize.define("wholeseller",{
     storeName: {
         type: DataTypes.STRING,
     },
-    ownerName:{
+    ownerName: {
         type: DataTypes.STRING,
     },
     storeAddress: {
         type: DataTypes.STRING,
     },
-    bussinessCategory:{
+    bussinessCategory: {
         type: DataTypes.ARRAY(DataTypes.STRING),
-    }, 
-    bizomOutletId:{
+    },
+    bizomOutletId: {
         type: DataTypes.STRING,
     },
-    monthlysalesvolume:{
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    monthlysalesvalueinr:{
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    // segmentId:{
-    //     type: DataTypes.STRING,
-    //     allowNull: true,
-    //     references: {
-    //         model: 'wse_segment', // Name of the referenced model
-    //         key: 'id'      // Name of the referenced column in the referenced model
-    //       }
-    // },
-    // brandId:{
-    //     type: DataTypes.STRING,
-    //     allowNull: true,
-    //     references: {
-    //         model: 'wse_brand', // Name of the referenced model
-    //         key: 'id'      // Name of the referenced column in the referenced model
-    //       }
-    // },
-    brandId:{
-        type: DataTypes.ARRAY(DataTypes.UUID),
+    businessVolume: {
+        type: DataTypes.JSON, // Use DataTypes.JSON instead of DataTypes.JSONB for MySQL
         allowNull: true,
+        defaultValue: [
+            { monthlysalesvolume: '', monthlysalesvalueinr: '', brandId: '' },
+        ]
     },
-    mobile_number:{
+    mobile_number: {
         type: DataTypes.STRING,
         allowNull: true
-    }, 
-    pincode:{
+    },
+    pincode: {
         type: DataTypes.STRING,
         allowNull: true
     },
-    // gstNumber:{
-    //     type: DataTypes.STRING,
-    //     allowNull: true
-    // },
-    // panNumber:{
-    //     type: DataTypes.STRING,
-    //     allowNull: true
-    // },
-    emailId:{
-        type: DataTypes.STRING
-    }, 
-    state:{
+    emailId: {
         type: DataTypes.STRING
     },
-    category:{
+    state: {
+        type: DataTypes.STRING
+    },
+    category: {
         type: DataTypes.ENUM,
         values: ['A', 'B', 'C'],
         defaultValue: 'A'
-    }, 
-    // storeLocation:{
-    //     type: DataTypes.STRING
-    // },
-    townAndCity:{
-        type:DataTypes.STRING
     },
-    latitude:{
-        type:DataTypes.STRING
+    townAndCity: {
+        type: DataTypes.STRING
     },
-    longitude:{
-        type:DataTypes.STRING
+    latitude: {
+        type: DataTypes.STRING
     },
-    imageStore:{
+    longitude: {
+        type: DataTypes.STRING
+    },
+    imageStore: {
         type: DataTypes.ARRAY(DataTypes.STRING),
     },
-    createdBy:{
-        type : DataTypes.STRING,
+    createdBy: {
+        type: DataTypes.STRING,
     },
-    createdAt:{
-        type : DataTypes.STRING,
+    createdAt: {
+        type: DataTypes.STRING,
         defaultValue: DateTime
     },
-    updatedAt:{
-        type : DataTypes.STRING,
+    updatedAt: {
+        type: DataTypes.STRING,
         defaultValue: DateTime
     },
-    deletedAt:{
-        type : DataTypes.STRING,
+    deletedAt: {
+        type: DataTypes.STRING,
     }
 });
 
@@ -118,87 +86,87 @@ export const WholeSellerSegment = sequelize.define("wse_segment", {
         primaryKey: true,
         defaultValue: Sequelize.UUIDV4, // Generate UUID automatically
     },
-    segmentName:{
+    segmentName: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    createdAt:{
-        type : DataTypes.DATE,
+    createdAt: {
+        type: DataTypes.DATE,
         allowNull: true
     },
-    updatedAt:{
-        type : DataTypes.DATE,
+    updatedAt: {
+        type: DataTypes.DATE,
         allowNull: true
     },
-    deletedAt:{
-        type : DataTypes.DATE,
+    deletedAt: {
+        type: DataTypes.DATE,
         allowNull: true
     }
 }, {
-        hooks: {
-            beforeValidate: (wholeSeller, options) => {
-                // Set createdAt and updatedAt to current timestamp
-                if (wholeSeller.isNewRecord) {
-                    wholeSeller.createdAt = new Date();
-                }
-                wholeSeller.updatedAt = new Date();
+    hooks: {
+        beforeValidate: (wholeSeller, options) => {
+            // Set createdAt and updatedAt to current timestamp
+            if (wholeSeller.isNewRecord) {
+                wholeSeller.createdAt = new Date();
             }
+            wholeSeller.updatedAt = new Date();
         }
+    }
 });
 
 // ################################### - Schema for Brand - ######################################
-export const WholeSellerBrand = sequelize.define("wse_brand",{
+export const WholeSellerBrand = sequelize.define("wse_brand", {
     id: {
         type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: Sequelize.UUIDV4, // Generate UUID automatically
     },
-    brandName:{
+    brandName: {
         type: DataTypes.STRING,
     },
     segment_id: {
         type: DataTypes.UUID
     },
-    createdAt:{
-        type : DataTypes.DATE
+    createdAt: {
+        type: DataTypes.DATE
     },
-    updatedAt:{
-        type : DataTypes.DATE,
+    updatedAt: {
+        type: DataTypes.DATE,
     },
-    deletedAt:{
-        type : DataTypes.DATE,
-    }, 
+    deletedAt: {
+        type: DataTypes.DATE,
+    },
 }, {
-        hooks: {
-            beforeValidate: (wholeSeller, options) => {
-                // Set createdAt and updatedAt to current timestamp
-                if (wholeSeller.isNewRecord) {
-                    wholeSeller.createdAt = new Date();
-                }
-                wholeSeller.updatedAt = new Date();
+    hooks: {
+        beforeValidate: (wholeSeller, options) => {
+            // Set createdAt and updatedAt to current timestamp
+            if (wholeSeller.isNewRecord) {
+                wholeSeller.createdAt = new Date();
             }
+            wholeSeller.updatedAt = new Date();
         }
+    }
 });
 
 // schema for image store
-export const WholeSellerImageStore = sequelize.define("wse_image_store",{
+export const WholeSellerImageStore = sequelize.define("wse_image_store", {
     id: {
         type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: Sequelize.UUIDV4, // Generate UUID automatically
     },
-    ImageName:{
+    ImageName: {
         type: DataTypes.STRING,
         defaultValue: "Confectionary"
     },
-    createdAt:{
-        type : DataTypes.DATE,
+    createdAt: {
+        type: DataTypes.DATE,
         defaultValue: DateTime
     },
-    updatedAt:{
-        type : DataTypes.DATE,
+    updatedAt: {
+        type: DataTypes.DATE,
     },
-    deletedAt:{
-        type : DataTypes.DATE,
+    deletedAt: {
+        type: DataTypes.DATE,
     }
 });

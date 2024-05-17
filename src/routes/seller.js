@@ -20,7 +20,7 @@ router.post('/create-segment', verifyToken, verfiyAdmin, createSegment);
 router.post('/create-brand', verifyToken, verfiyAdmin, createBrand);
 router.post('/get-whole-seller', verifyToken, verfiyAdmin, getWholeSeller);
 router.post('/convert-json', verifyToken, verfiyAdmin, upload1.single('file'), convertToJson);
-router.post('/get-storedata-by-mobile', verifyToken, verfiyAdmin, getStoreDataByMobileNo);
+router.get('/get-storedata-by-bizomid', verifyToken, verfiyAdmin, getStoreDataByMobileNo);
 router.post('/upload-image', verifyToken, verfiyAdmin, upload(), uploadImage);
 
 export default router;
