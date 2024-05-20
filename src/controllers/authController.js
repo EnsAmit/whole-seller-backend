@@ -43,11 +43,11 @@ export const adminLogin = async (req, res, next) => {
         rest.createdAt = (rest.createdAt)?.toLocaleString('en-US', {
             timeZone: 'Asia/Kolkata', // Assuming updatedIstAt is in Indian Standard Time
             hour12: true,
-        });
+        })?.replace(/(\d{4}),/, '$1 ,');
         rest.updatedAt = (rest.updatedAt)?.toLocaleString('en-US', {
             timeZone: 'Asia/Kolkata', // Assuming updatedIstAt is in Indian Standard Time
             hour12: true,
-        });
+        })?.replace(/(\d{4}),/, '$1 ,');
         console.log(rest, "rest")
         //generate jwt token
 

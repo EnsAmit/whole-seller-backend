@@ -163,6 +163,23 @@ export const createWholeSeller = async (req, res, next) => {
   }
 };
 
+export const getAllBizomId = async (req, res, next) => {
+  try {
+    const segmentData = await Store.findAll({
+      attributes: ["bizomOutletId"],
+    });
+
+    res.status(200).json({
+      error: false,
+      message: "All Bizom Id fetch Successfully...!",
+      data: segmentData,
+    });
+  } catch (error) {
+    console.log("bizom-id Error ::>>", error);
+    next(error);
+  }
+};
+
 export const getAllSegment = async (req, res, next) => {
   try {
     const segmentData = await WholeSellerSegment.findAll({

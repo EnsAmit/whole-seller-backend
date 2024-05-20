@@ -30,6 +30,9 @@ export const Store = sequelize.define("store", {
     allowNull: true,
     unique: true,
   },
+  pincode: {
+    type: DataTypes.STRING
+  },
   townAndCity: {
     type: DataTypes.STRING
   },
