@@ -144,7 +144,7 @@ export const updateRoleById = async(req, res, next) => {
         });
         const perm4Obj = {
             moduleName:"store",
-            access:permsn.role,
+            access:permsn.store,
             updatedIstAt: DateTime()
         };
         const perm4 = await Permission.update(perm4Obj,{

@@ -66,6 +66,12 @@ export const WholeSeller = sequelize.define("wholeseller", {
     createdBy: {
         type: DataTypes.STRING,
     },
+    payment: {
+        type: DataTypes.STRING,
+    },
+    credits: {
+        type: DataTypes.STRING,
+    },
     createdAt: {
         type: DataTypes.STRING,
         defaultValue: DateTime

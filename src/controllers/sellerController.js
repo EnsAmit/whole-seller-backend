@@ -142,10 +142,10 @@ export const createWholeSeller = async (req, res, next) => {
       // segmentId: wholeSellerData.brandId,
       // brandId: wholeSellerData.brandId,
       businessVolume: wholeSellerData.businessVolume,
-      imageStore: [
-        "1714991318771_Screenshot 2024-03-28 172023.png"
-    ],
-      createdBy: wholeSellerData.createdBy
+      imageStore: wholeSellerData.imageStore,
+      createdBy: wholeSellerData.createdBy,
+      payment: wholeSellerData.payment,
+      credits: wholeSellerData.credits,
     });
 
     res.status(200).json({
